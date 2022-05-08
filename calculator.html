@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>calculator</title>
+</head>
+<body>
+    <div id="app">
+       <header>Simple Calculator</header> 
+       <div>{{initValue}}</div>
+       <template v-for="number in 9">
+        <button type="button" @click="addNum(number)">{{number}}</button>
+       </template>
+       <button type="button" @click="addNum(0)">0</button>
+       <br>
+       <template v-for="operator in operators">
+        <button type="button" @click="operation(operator)">{{operator}}</button>
+        </template>
+        <br>
+        <button type="button" @click="reset()">reset</button>
+        <button type="button" @click="equal()">=</button>
+    </div>
+    <script src="https://unpkg.com/vue@3"></script>
+    <script>
+        Vue.createApp({
+            data(){
+                return {
+                    initValue: '0',
+                    operators: ['+','-','*','/'],
+                    beforeValue: 0,
+                    afterValue: 0,
+                    chooseOperator: '',
+                }
+            },
+            methods: {
+                addNum(value) {
+                    if(this.initValue === '0') {
+                        this.initValue = value
+                    }else{
+                        this.initValue += value.toString()
+                    }
+                    
+                },
+                operation(operator){
+                    this.beforeValue = Number(this.initValue);
+                    this.initValue = '0';
+                    this.chooseOperator = operator;
+                    console.log(this.beforeValue);
+                    console.log(this.chooseOperator);
+                },
+                equal(){
+                    this.afterValue = Number(this.initValue);
+                    console.log(this.afterValue)
+                    switch(this.chooseOperator) {
+                        case '+':
+                            this.initValue = `${this.beforeValue + Number(this.initValue)}`;
+                            // console.log(Number(this.initValue));
+                            break;
+                        case '-':
+                            this.initValue = `${this.beforeValue - Number(this.initValue)}`;
+                            break;
+                        case '*':
+                            this.initValue = `${this.beforeValue * Number(this.initValue)}`;
+                            break;
+                        case '/':
+                            this.initValue = `${this.beforeValue / Number(this.initValue)}`;
+                            break;
+                    }
+                },
+                reset() {
+                    this.initValue = '0';
+                    this.beforeValue = '0';
+                    this.afterValue = '0';
+
+                }
+            }
+        }).mount('#app')
+    </script>
+</body>
+</html>
